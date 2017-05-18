@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace PasswordHelperWebApi
+namespace PasswordHelperWebApi.DependencyInversion
 {
     public class LiteServiceScope : IServiceScope
     {

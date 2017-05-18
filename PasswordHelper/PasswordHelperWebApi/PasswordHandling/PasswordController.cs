@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using PasswordHelper;
 using PasswordHelper.Common;
 
-namespace PasswordHelperWebApi
+namespace PasswordHelperWebApi.PasswordHandling
 {
     [Route("api/[controller]")]
     public class PasswordController : Controller

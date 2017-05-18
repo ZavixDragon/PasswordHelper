@@ -1,4 +1,4 @@
-﻿namespace PasswordHelperWebApi
+﻿namespace PasswordHelperWebApi.PasswordHandling
 {
     public class GeneratePasswordRequest
     {

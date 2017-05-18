@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.TestHost;
 using Newtonsoft.Json;
 using PasswordHelper;
 using PasswordHelperWebApi;
+using PasswordHelperWebApi.PasswordHandling;
 using Xunit;
 
 namespace PasswordHelperWebApiTests

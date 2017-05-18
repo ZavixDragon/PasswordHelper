@@ -7,6 +7,8 @@ using Microsoft.Extensions.Logging;
 using LiteIoCContainer;
 using PasswordHelper;
 using PasswordHelper.Common;
+using PasswordHelperWebApi.DependencyInversion;
+using PasswordHelperWebApi.PasswordHandling;
 
 namespace PasswordHelperWebApi
 {

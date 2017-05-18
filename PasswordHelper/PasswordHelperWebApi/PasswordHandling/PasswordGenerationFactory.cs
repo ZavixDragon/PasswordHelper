@@ -2,7 +2,7 @@
 using PasswordHelper;
 using PasswordHelper.CharacterSuppliers;
 
-namespace PasswordHelperWebApi
+namespace PasswordHelperWebApi.PasswordHandling
 {
     public class PasswordGenerationFactory : IPasswordGenerationFactory
     {

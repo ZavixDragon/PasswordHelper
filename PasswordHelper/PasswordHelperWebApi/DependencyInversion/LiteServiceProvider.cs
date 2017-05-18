@@ -1,7 +1,7 @@
-﻿using LiteIoCContainer;
-using System;
+﻿using System;
+using LiteIoCContainer;
 
-namespace PasswordHelperWebApi
+namespace PasswordHelperWebApi.DependencyInversion
 {
     public class LiteServiceProvider : IServiceProvider
     {

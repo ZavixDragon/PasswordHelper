@@ -1,6 +1,6 @@
 ﻿using PasswordHelper;
 
-namespace PasswordHelperWebApi
+namespace PasswordHelperWebApi.PasswordHandling
 {
     public interface IPasswordGenerationFactory
     {
