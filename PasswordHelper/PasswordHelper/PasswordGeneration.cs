@@ -16,7 +16,7 @@ namespace PasswordHelper
         public PasswordGeneration(string identifier, int length, List<ICharacters> characterSets)
         {
             if (!characterSets.Any())
-                throw new ArgumentException("No valid characters found for generating the password");
+                throw new ArgumentException("No valid characterList found for generating the password");
             if (length < characterSets.Count)
                 throw new ArgumentException("The length was too short to use all inclusions");
             _length = length;
@@ -32,9 +32,24 @@ namespace PasswordHelper
 
         private Password Generate()
         {
-            var characters = _characterSets.Select(x => x.Next()).ToList();
-            Enumerable.Range(0, _length - _characterSets.Count).ForEach(x => characters.Add(_characterSets.Random().Next()));
-            return new Password(_identifier, string.Concat(characters.OrderBy(x => Rng.Int())));
+            var characters = GetOneCharacterFromEachCharacterSet()
+                .Concat(GetCharactersFromRandomCharacterSets(_length - _characterSets.Count));
+            return new Password(_identifier, string.Concat(Shuffle(characters)));
+        }
+
+        private IOrderedEnumerable<char> Shuffle(IEnumerable<char> characters)
+        {
+            return characters.OrderBy(x => Rng.Int());
+        }
+
+        private IEnumerable<char> GetCharactersFromRandomCharacterSets(int count)
+        {
+            return Enumerable.Range(0, count).Select(x => _characterSets.Random().Next());
+        }
+
+        private IEnumerable<char> GetOneCharacterFromEachCharacterSet()
+        {
+            return _characterSets.Select(x => x.Next());
         }
     }
 }
