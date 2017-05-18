@@ -2,6 +2,7 @@
 {
     public class GeneratePasswordRequest
     {
+        public string Identifier { get; set; }
         public int Length { get; set; } = 16;
         public bool IncludeLowercaseLetters { get; set; } = true;
         public bool IncludeUppercaseLetters { get; set; } = true;

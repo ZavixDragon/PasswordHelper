@@ -33,7 +33,7 @@ namespace PasswordHelperWebApi
             var provider = new LiteServiceProvider(container, services.BuildServiceProvider());
             container.RegisterInstance<IServiceScopeFactory>(new LiteServiceScopeFactory(provider));
             container.Register<IPasswordGenerationFactory>(typeof(PasswordGenerationFactory));
-            container.RegisterInstance<IStore<Password>>(new MemoryStore<Password>());
+            container.RegisterInstance<IStore<Password>>(new InMemoryStore<Password>());
             return provider;
         }
 

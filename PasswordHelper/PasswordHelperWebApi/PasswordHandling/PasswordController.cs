@@ -27,20 +27,22 @@ namespace PasswordHelperWebApi.PasswordHandling
             }
             catch (InvalidOperationException ex)
             {
-                return new ObjectResult(ex.Message) { StatusCode = (int)HttpStatusCode.NotFound };
+                return new ErrorResult(ex.Message, HttpStatusCode.NotFound);
             }
         }
 
         [HttpPost("generate")]
         public IActionResult Post([FromBody]GeneratePasswordRequest request)
         {
+            if (request.Identifier == null)
+                return new ErrorResult("The request is missing an Identifier", HttpStatusCode.BadRequest);
             try
             {
-                return new ObjectResult(_factory.Create(request).Get()) { StatusCode = (int) HttpStatusCode.OK };
+                return new JsonResult(_factory.Create(request).Get()) { StatusCode = (int) HttpStatusCode.OK };
             }
             catch (ArgumentException ex)
             {
-                return new ObjectResult(ex.Message) { StatusCode = (int) HttpStatusCode.BadRequest };
+                return new ErrorResult(ex.Message, HttpStatusCode.BadRequest);
             }
         }
 
@@ -48,10 +50,8 @@ namespace PasswordHelperWebApi.PasswordHandling
         public IActionResult Post([FromBody]Password value, [FromServices]IStore<Password> store)
         {
             if (value.Identifier == null || value.Value == null)
-                return new ObjectResult("Can't save password because either the identifier or the password is null.")
-                {
-                    StatusCode = (int)HttpStatusCode.BadRequest
-                };
+                return new ErrorResult("Can't save password because either the identifier or the password is null.", 
+                    HttpStatusCode.BadRequest);
             store.Store(value.Identifier, value);
             return new ObjectResult("Success") { StatusCode = (int) HttpStatusCode.OK };
         }

@@ -1,9 +1,8 @@
-using LiteIoCContainer;
-using LiteIoCContainerTests.TestObjects;
 using System;
+using LiteIoCContainer.Tests.TestObjects;
 using Xunit;
 
-namespace LiteIoCContainerTests
+namespace LiteIoCContainer.Tests
 {
     public class ContainerTests
     {
@@ -41,15 +40,6 @@ namespace LiteIoCContainerTests
             var obj = _container.Resolve<ISimple>();
 
             Assert.Equal(typeof(SimpleObject), obj.GetType());
-        }
-
-        [Fact]
-        [Trait("Category", "Unit")]
-        public void RegisterTypeTwice_InvalidOperationExceptionThrown()
-        {
-            _container.Register<SimpleObject>(typeof(SimpleObject));
-
-            Assert.Throws<InvalidOperationException>(() => _container.Register<SimpleObject>(typeof(SimpleObject)));
         }
 
         [Fact]

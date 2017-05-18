@@ -1,4 +1,4 @@
-﻿namespace PasswordHelper.CharacterSuppliers
+﻿namespace PasswordHelper.Characters
 {
     public interface ICharacters
     {

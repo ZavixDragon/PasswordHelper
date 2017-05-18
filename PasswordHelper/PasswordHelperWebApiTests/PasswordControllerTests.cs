@@ -24,13 +24,40 @@ namespace PasswordHelperWebApiTests
 
         [Fact]
         [Trait("Category", "Integration")]
-        public async Task GeneratePasswordWithMissingFields_UsesDefaultLength()
+        public async Task GeneratePasswordWithNoIdentifier_BadRequest()
         {
-            var response = await _client.PostAsync("/api/password/generate", new StringContent("{}", Encoding.UTF8, "application/json"));
+            var request = new GeneratePasswordRequest();
+
+            var response = await _client.PostAsync("/api/password/generate", GetJsonContent(request));
+
+            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+        }
+
+        [Fact]
+        [Trait("Category", "Integration")]
+        public async Task GeneratePasswordWithOnlyIdentifier_UsesDefaults()
+        {
+            var response = await _client.PostAsync("/api/password/generate", new StringContent("{ \"Identifier\":\"site\" }", Encoding.UTF8, "application/json"));
+            var password = JsonConvert.DeserializeObject<Password>(await response.Content.ReadAsStringAsync());
 
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-            Assert.Equal((await response.Content.ReadAsStringAsync()).Length, new GeneratePasswordRequest().Length);
+            Assert.Equal(password.Value.Length, new GeneratePasswordRequest().Length);
         }
+
+        [Fact]
+        [Trait("Category", "Integration")]
+        public async Task GeneratePasswordCorrectly_ReturnValidPassword()
+        {
+            var request = new GeneratePasswordRequest { Identifier = "siteName" };
+
+            var response = await _client.PostAsync("/api/password/generate", GetJsonContent(request));
+            var password = JsonConvert.DeserializeObject<Password>(await response.Content.ReadAsStringAsync());
+
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.NotNull(password.Value);
+            Assert.NotNull(password.Identifier);
+        }
+
 
         [Fact]
         [Trait("Category", "Integration")]
@@ -38,6 +65,7 @@ namespace PasswordHelperWebApiTests
         {
             var request = new GeneratePasswordRequest
             {
+                Identifier = "",
                 Length = 0,
                 IncludeNumbers = true
             };
@@ -53,6 +81,7 @@ namespace PasswordHelperWebApiTests
         {
             var request = new GeneratePasswordRequest
             {
+                Identifier = "",
                 Length = 1,
                 IncludeLowercaseLetters = false,
                 IncludeUppercaseLetters = false,

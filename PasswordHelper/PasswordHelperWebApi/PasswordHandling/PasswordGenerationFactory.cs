@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using PasswordHelper;
-using PasswordHelper.CharacterSuppliers;
+using PasswordHelper.Characters;
 
 namespace PasswordHelperWebApi.PasswordHandling
 {
@@ -17,7 +17,7 @@ namespace PasswordHelperWebApi.PasswordHandling
                 characters.Add(new Numbers());
             if (request.IncludeSymbols)
                 characters.Add(new Symbols());
-            return new PasswordGeneration(request.Length, characters);
+            return new PasswordGeneration(request.Identifier, request.Length, characters);
         }
     }
 }

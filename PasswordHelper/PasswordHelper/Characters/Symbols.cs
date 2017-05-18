@@ -1,6 +1,6 @@
-﻿namespace PasswordHelper.CharacterSuppliers
+﻿namespace PasswordHelper.Characters
 {
-    public class Symbols : RandomCharacterSupplier
+    public class Symbols : RandomCharacters
     {
         public Symbols() : base("$%#@!*?;:^&") {}
     }

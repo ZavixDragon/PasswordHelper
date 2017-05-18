@@ -1,14 +1,14 @@
 ﻿using PasswordHelper.Common;
 
-namespace PasswordHelper.CharacterSuppliers
+namespace PasswordHelper.Characters
 {
-    public abstract class RandomCharacterSupplier : ICharacters
+    public abstract class RandomCharacters : ICharacters
     {
         private char[] _chars;
 
-        public RandomCharacterSupplier(string chars) : this(chars.ToCharArray()) {}
+        public RandomCharacters(string chars) : this(chars.ToCharArray()) {}
 
-        public RandomCharacterSupplier(char[] chars)
+        public RandomCharacters(char[] chars)
         {
             _chars = chars;
         }

@@ -1,6 +1,6 @@
-﻿namespace PasswordHelper.CharacterSuppliers
+﻿namespace PasswordHelper.Characters
 {
-    public class Numbers : RandomCharacterSupplier
+    public class Numbers : RandomCharacters
     {
         public Numbers() : base("0123456789") {}
     }

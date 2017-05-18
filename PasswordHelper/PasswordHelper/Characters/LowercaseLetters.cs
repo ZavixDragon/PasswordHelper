@@ -1,6 +1,6 @@
-﻿namespace PasswordHelper.CharacterSuppliers
+﻿namespace PasswordHelper.Characters
 {
-    public class LowercaseLetters : RandomCharacterSupplier
+    public class LowercaseLetters : RandomCharacters
     {
         public LowercaseLetters() : base("abcdefghijklmnopqrstuvwxyz") {}
     }

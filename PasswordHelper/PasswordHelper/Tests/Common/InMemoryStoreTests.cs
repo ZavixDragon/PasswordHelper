@@ -1,18 +1,17 @@
-﻿using PasswordHelper;
-using PasswordHelper.Common;
-using System;
+﻿using System;
 using System.Linq;
+using PasswordHelper.Common;
 using Xunit;
 
-namespace PasswordHelperTests
+namespace PasswordHelper.Tests.Common
 {
-    public class MemoryStoreTests
+    public class InMemoryStoreTests
     {
-        private readonly MemoryStore<string> _store;
+        private readonly InMemoryStore<string> _store;
 
-        public MemoryStoreTests()
+        public InMemoryStoreTests()
         {
-            _store = new MemoryStore<string>();
+            _store = new InMemoryStore<string>();
         }
 
         [Fact]
@@ -68,19 +67,19 @@ namespace PasswordHelperTests
             Predicate<string> condition = x => x.Length > 5;
             input.ForEachIndex((x, i) => _store.Store(i.ToString(), x));
 
-            var filteredList = _store.RetrieveWhere(condition);
+            var matches = _store.RetrieveWhere(condition);
 
-            Assert.Equal(input.Count(x => condition(x)), filteredList.Count);
-            filteredList.ForEach(x => Assert.True(input.Contains(x)));
+            Assert.Equal(input.Count(x => condition(x)), matches.Count);
+            matches.ForEach(x => Assert.True(input.Contains(x)));
         }
 
         [Fact]
         [Trait("Category", "Unit")]
         public void AskIfNonStoredIDExists_ReturnsFalse()
         {
-            var doesExist = _store.Exists("non used id");
+            var exists = _store.Exists("non used id");
 
-            Assert.False(doesExist);
+            Assert.False(exists);
         }
 
         [Fact]
@@ -89,9 +88,9 @@ namespace PasswordHelperTests
         {
             _store.Store("id", "something");
 
-            var doesExist = _store.Exists("id");
+            var exists = _store.Exists("id");
 
-            Assert.True(doesExist);
+            Assert.True(exists);
         }
     }
 }

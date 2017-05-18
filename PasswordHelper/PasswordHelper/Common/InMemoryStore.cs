@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using PasswordHelper.Common;
 using System.Linq;
 
-namespace PasswordHelper
+namespace PasswordHelper.Common
 {
-    public class MemoryStore<T> : IStore<T>
+    public class InMemoryStore<T> : IStore<T>
     {
         public Dictionary<string, T> _values = new Dictionary<string, T>();
 

@@ -7,17 +7,17 @@ namespace LiteIoCContainer
 {
     public class Container
     {
-        private readonly Dictionary<Type, Func<object>> _registeredTypes = new Dictionary<Type, Func<object>>();
+        private readonly Dictionary<Type, Func<object>> _types = new Dictionary<Type, Func<object>>();
 
         public void Register<T>(Type type)
         {
             Register(typeof(T), type);
         }
 
-        public void Register(Type registerType, Type type)
+        public void Register(Type target, Type type)
         {
-            ValidateRegistration(registerType, type);
-            _registeredTypes.Add(registerType, () => Construct(type));
+            ValidateRegistration(target, type);
+            _types.Add(target, () => Construct(type));
         }
 
         public void RegisterInstance<T>(T instance)
@@ -25,10 +25,10 @@ namespace LiteIoCContainer
             RegisterInstance(typeof(T), instance);
         }
 
-        public void RegisterInstance(Type registerType, object instance)
+        public void RegisterInstance(Type target, object instance)
         {
-            ValidateRegistration(registerType, instance.GetType());
-            _registeredTypes.Add(registerType, () => instance);
+            ValidateRegistration(target, instance.GetType());
+            _types.Add(target, () => instance);
         }
 
         public bool IsRegistered<T>()
@@ -38,7 +38,7 @@ namespace LiteIoCContainer
 
         public bool IsRegistered(Type type)
         {
-            return _registeredTypes.ContainsKey(type);
+            return _types.ContainsKey(type);
         }
 
         public T Resolve<T>()
@@ -48,19 +48,17 @@ namespace LiteIoCContainer
 
         public object Resolve(Type type)
         {
-            if (!_registeredTypes.ContainsKey(type))
+            if (!_types.ContainsKey(type))
                 throw new InvalidOperationException($"Can't resolve type {type.Name}, because it has not been registered yet.");
-            return _registeredTypes[type]();
+            return _types[type]();
         }
 
-        private void ValidateRegistration(Type registerType, Type resolveType)
+        private void ValidateRegistration(Type target, Type type)
         {
-            if (_registeredTypes.ContainsKey(registerType))
-                throw new InvalidOperationException($"Can't register type {resolveType.Name} as {registerType.Name}, because {registerType.Name} has already been registered.");
-            if (resolveType.GetTypeInfo().IsAbstract)
-                throw new ArgumentException($"Can't register type {resolveType.Name} as {registerType.Name}, because {resolveType.Name} is abstract and cannot be constructed.");
-            if (!registerType.GetTypeInfo().IsAssignableFrom(resolveType.GetTypeInfo()))
-                throw new ArgumentException($"Can't register type {resolveType.Name} as {registerType.Name}, because {resolveType.Name} is not assignable from {registerType.Name}.");
+            if (type.GetTypeInfo().IsAbstract)
+                throw new ArgumentException($"Can't register type {type.Name} as {target.Name}, because {type.Name} is abstract and cannot be constructed.");
+            if (!target.GetTypeInfo().IsAssignableFrom(type.GetTypeInfo()))
+                throw new ArgumentException($"Can't register type {type.Name} as {target.Name}, because {type.Name} is not assignable from {target.Name}.");
         }
 
         private object Construct(Type type)
@@ -92,7 +90,7 @@ namespace LiteIoCContainer
         {
             return info.GetParameters()
                 .Select(x => x.ParameterType)
-                .All(x => _registeredTypes.ContainsKey(x));
+                .All(x => _types.ContainsKey(x));
         }
     }
 }
